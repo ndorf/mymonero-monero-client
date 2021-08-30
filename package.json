@@ -1,6 +1,6 @@
 {
-  "name": "mymonero-monero-client",
-  "version": "1.0.0",
+  "name": "@mymonero/mymonero-monero-client",
+  "version": "1.0.1",
   "description": "The JS library containing the JS transpilation of the shared library behind the MyMonero apps",
   "main": "./src/index.js",
   "scripts": {
@@ -20,6 +20,9 @@
   "devDependencies": {
     "mocha": "^8.4.0",
     "napa": "^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "Devin Pearson <devin@mymonero.com> (https://github.com/devinpearson/)",
   "license": "BSD-3-Clause",

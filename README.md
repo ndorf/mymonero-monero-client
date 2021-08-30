@@ -25,12 +25,18 @@ By following these instructions, new WASM library is generated and copied to the
 
 ## Usage
 
+### Installation
+
+```bash
+npm i @mymonero/mymonero-monero-client
+```
+
 ### Initialize
 
 Initialize the WABridge class which loads and prepares the WebAssembly.
 
 ```js
-const WABridge = await require('../src/index')({})
+const WABridge = await require('@mymonero/mymonero-monero-client')({})
 ```
 
 ### Generate Wallet
