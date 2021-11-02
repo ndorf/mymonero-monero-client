@@ -33,83 +33,7 @@
 #include <emscripten.h>
 
 #include "serial_bridge_index.hpp"
-#include "serial_bridge_utils.hpp"
 #include "emscr_SendFunds_bridge.hpp"
-
-string decodeAddress(const string address, const string nettype)
-{
-    return serial_bridge::decode_address(address, nettype);
-}
-
-bool isSubaddress(const string address, const string nettype)
-{
-    return serial_bridge::is_subaddress(address, nettype);
-}
-
-bool isIntegratedAddress(const string address, const string nettype)
-{
-    return serial_bridge::is_integrated_address(address, nettype);
-}
-
-string newIntegratedAddress(const string address, const string paymentId, const string nettype)
-{
-    return serial_bridge::new_integrated_address(address, paymentId, nettype);
-}
-
-string generatePaymentId()
-{
-    return serial_bridge::new_payment_id();
-}
-
-string generateWallet(const string localeLanguageCode, const string nettype)
-{
-    return serial_bridge::newly_created_wallet(localeLanguageCode, nettype);
-}
-
-bool compareMnemonics(const string mnemonicA, const string mnemonicB)
-{
-    return serial_bridge::are_equal_mnemonics(mnemonicA, mnemonicB);
-}
-
-string addressAndKeysFromSeed(const string seed,  const string nettype)
-{
-    return serial_bridge::address_and_keys_from_seed(seed, nettype);
-}
-
-string mnemonicFromSeed(const string seed, const string wordsetName)
-{
-    return serial_bridge::mnemonic_from_seed(seed, wordsetName);
-}
-
-string seedAndKeysFromMnemonic(const string mnemonic, const string nettype)
-{
-    return serial_bridge::seed_and_keys_from_mnemonic(mnemonic, nettype);
-}
-
-string isValidKeys(const string address, const string privateViewKey, const string privateSpendKey, const string seed, const string nettype)
-{
-    return serial_bridge::validate_components_for_login(address, privateViewKey, privateSpendKey, seed, nettype);
-}
-
-string estimateTxFee(const string priority, const string feePerb, const string forkVersion)
-{
-    return serial_bridge::estimated_tx_network_fee(priority, feePerb, forkVersion);
-}
-
-string generateKeyImage(const string txPublicKey, const string privateViewKey, const string publicSpendKey, const string privateSpendKey, const string outputIndex)
-{
-    return serial_bridge::generate_key_image(txPublicKey, privateViewKey, publicSpendKey, privateSpendKey, outputIndex);
-}
-
-string prepareSend(const string &args_string)
-{
-    return emscr_SendFunds_bridge::prepare_send(args_string);
-}
-
-string sendFunds(const string &args_string)
-{
-    return emscr_SendFunds_bridge::send_funds(args_string);
-}
 
 std::string getExceptionMessage(intptr_t exceptionPtr) {
   return std::string(reinterpret_cast<std::exception *>(exceptionPtr)->what());
@@ -118,25 +42,25 @@ std::string getExceptionMessage(intptr_t exceptionPtr) {
 EMSCRIPTEN_BINDINGS(my_module)
 { // C++ -> JS 
     emscripten::function("getExceptionMessage", &getExceptionMessage);
-    emscripten::function("decodeAddress", &decodeAddress);
-    emscripten::function("isSubaddress", &isSubaddress);
-    emscripten::function("isIntegratedAddress", &isIntegratedAddress);
+    emscripten::function("decodeAddress", &serial_bridge::decode_address);
+    emscripten::function("isSubaddress", &serial_bridge::is_subaddress);
+    emscripten::function("isIntegratedAddress", &serial_bridge::is_integrated_address);
 
-    emscripten::function("newIntegratedAddress", &newIntegratedAddress);
-    emscripten::function("generatePaymentId", &generatePaymentId);
+    emscripten::function("newIntegratedAddress", &serial_bridge::new_integrated_address);
+    emscripten::function("generatePaymentId", &serial_bridge::new_payment_id);
 
-    emscripten::function("generateWallet", &generateWallet);
-    emscripten::function("compareMnemonics", &compareMnemonics);
-    emscripten::function("mnemonicFromSeed", &mnemonicFromSeed);
-    emscripten::function("seedAndKeysFromMnemonic", &seedAndKeysFromMnemonic);
-    emscripten::function("isValidKeys", &isValidKeys);
-    emscripten::function("addressAndKeysFromSeed", &addressAndKeysFromSeed);
+    emscripten::function("generateWallet", &serial_bridge::newly_created_wallet);
+    emscripten::function("compareMnemonics", &serial_bridge::are_equal_mnemonics);
+    emscripten::function("mnemonicFromSeed", &serial_bridge::mnemonic_from_seed);
+    emscripten::function("seedAndKeysFromMnemonic", &serial_bridge::seed_and_keys_from_mnemonic);
+    emscripten::function("isValidKeys", &serial_bridge::validate_components_for_login);
+    emscripten::function("addressAndKeysFromSeed", &serial_bridge::address_and_keys_from_seed);
 
-    emscripten::function("estimateTxFee", &estimateTxFee);
+    emscripten::function("estimateTxFee", &serial_bridge::estimated_tx_network_fee);
 
-    emscripten::function("generateKeyImage", &generateKeyImage);
-    emscripten::function("prepareTx", &prepareSend);
-    emscripten::function("createAndSignTx", &sendFunds);
+    emscripten::function("generateKeyImage", &serial_bridge::generate_key_image);
+    emscripten::function("prepareTx", emscr_SendFunds_bridge::prepare_send);
+    emscripten::function("createAndSignTx", &emscr_SendFunds_bridge::send_funds);
 }
 extern "C"
 { // C -> JS

@@ -12,8 +12,8 @@ project(MyMoneroClient)
 include_directories("src")
 include_directories("node_modules")
 #
-set(MONERO_SRC "node_modules/@mymonero/mymonero-core-custom")
-set(MYMONERO_CORE_CPP_SRC "node_modules/@mymonero/mymonero-core-cpp/src")
+set(MONERO_SRC "src/submodules/monero-core-custom")
+set(MYMONERO_CORE_CPP_SRC "src/submodules/mymonero-core-cpp/src")
 #
 include_directories("${MYMONERO_CORE_CPP_SRC}")
 #

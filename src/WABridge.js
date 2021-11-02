@@ -65,6 +65,7 @@ class WABridge {
     }
     
     try {
+      // WebAssembly keeps state between calls so we can prepare the tx before getting the random out and signing tx 
       const retString = this.Module.prepareTx(JSON.stringify(args, null, ''))
       const ret = JSON.parse(retString)
       // check for any errors passed back from WebAssembly
@@ -365,6 +366,7 @@ function checkNetType (netType) {
       throw Error('Invalid nettype')
   }
 }
+
 function checkPriority (priority) {
   switch (priority) {
     case 1:

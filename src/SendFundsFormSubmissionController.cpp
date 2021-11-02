@@ -109,9 +109,9 @@ string FormSubmissionController::prepare()
 		return ret_json_from_root(root);
 	}
 	// since we may have a payment ID here (which may also have been entered manually), validate
-	if (monero_paymentID_utils::is_a_valid_or_not_a_payment_id(paymentID_toUseOrToNilIfIntegrated) == false) { // convenience function - will be true if nil pid
-		return error_ret_json_from_message("Invalid payment id");
-	}
+	// if (monero_paymentID_utils::is_a_valid_or_not_a_payment_id(paymentID_toUseOrToNilIfIntegrated) == false) { // convenience function - will be true if nil pid
+	// 	return error_ret_json_from_message("Invalid payment id");
+	// }
 	if (paymentID_toUseOrToNilIfIntegrated != boost::none && paymentID_toUseOrToNilIfIntegrated->empty() == false) { // short pid / integrated address coersion
 		if (decode_retVals.isSubaddress != true) { // this is critical or funds will be lost!!
 			if (paymentID_toUseOrToNilIfIntegrated->size() == monero_paymentID_utils::payment_id_length__short) { // a short one
