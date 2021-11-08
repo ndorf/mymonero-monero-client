@@ -85,8 +85,18 @@ string emscr_SendFunds_bridge::prepare_send(const string &args_string)
 		return error_ret_json_from_message("Long payment IDs are obsolete.");
 	}
 
+	const auto& destinations = json_root.get_child("destinations");
+	vector<string> dest_addrs, dest_amounts;
+	dest_addrs.reserve(destinations.size());
+	dest_amounts.reserve(destinations.size());
+
+	for (const auto& dest : destinations) {
+		dest_addrs.emplace_back(dest.second.get<string>("to_address"));
+		dest_amounts.emplace_back(dest.second.get<string>("send_amount"));
+	}
+
 	Parameters parameters{
-		json_root.get<string>("sending_amount_double_string"),
+		std::move(dest_amounts),
 		json_root.get<bool>("is_sweeping"),
 		(uint32_t)stoul(json_root.get<string>("priority")),
 		//
@@ -96,7 +106,7 @@ string emscr_SendFunds_bridge::prepare_send(const string &args_string)
 		json_root.get<string>("sec_spendKey_string"),
 		json_root.get<string>("pub_spendKey_string"),
 		//
-		json_root.get<string>("enteredAddressValue"),
+		std::move(dest_addrs),
 		//
 		json_root.get_child("unspentOuts")
 	};
