@@ -2,7 +2,7 @@
 //  SendFundsFormSubmissionController.hpp
 //  MyMonero
 //
-//  Copyright (c) 2014-2019, MyMonero.com
+//  Copyright (c) 2014-2021, MyMonero.com
 //
 //  All rights reserved.
 //
@@ -124,7 +124,6 @@ namespace SendFunds
 		//
 		string enteredAddressValue;
 		//
-		optional<string> manuallyEnteredPaymentID;
 		property_tree::ptree unspentOuts;
 	};
 	//
@@ -166,7 +165,6 @@ namespace SendFunds
 		property_tree::ptree randomOuts;
 		uint64_t sending_amount;
 		string to_address_string;
-		optional<string> payment_id_string;
 		bool isXMRAddressIntegrated;
 		optional<string> integratedAddressPIDForDisplay;
 		// - from cb_i

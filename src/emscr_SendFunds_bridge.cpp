@@ -1,6 +1,6 @@
 //
 //  emscr_async_bridge_index.cpp
-//  Copyright (c) 2014-2019, MyMonero.com
+//  Copyright (c) 2014-2021, MyMonero.com
 //
 //  All rights reserved.
 //
@@ -62,7 +62,7 @@ SendFunds::FormSubmissionController *controller_ptr = NULL;
 //
 // From-JS function decls
 string emscr_SendFunds_bridge::send_funds(const string &args_string)
-{	
+{
 	boost::property_tree::ptree json_root;
 
 	std::istringstream ss(args_string);
@@ -80,7 +80,11 @@ string emscr_SendFunds_bridge::prepare_send(const string &args_string)
 	// }
 	std::istringstream ss(args_string);
 	boost::property_tree::read_json(ss, json_root);
-	
+
+	if (json_root.get_child_optional("manuallyEnteredPaymentID")) {
+		return error_ret_json_from_message("Long payment IDs are obsolete.");
+	}
+
 	Parameters parameters{
 		json_root.get<string>("sending_amount_double_string"),
 		json_root.get<bool>("is_sweeping"),
@@ -94,13 +98,12 @@ string emscr_SendFunds_bridge::prepare_send(const string &args_string)
 		//
 		json_root.get<string>("enteredAddressValue"),
 		//
-		json_root.get_optional<string>("manuallyEnteredPaymentID"),
 		json_root.get_child("unspentOuts")
 	};
 	controller_ptr = new FormSubmissionController{parameters}; // heap alloc
 	if (!controller_ptr) { // exception will be thrown if oom but JIC, since null ptrs are somehow legal in WASM
 		return error_ret_json_from_message("Out of memory (heap vals container)");
 	}
-	
+
 	return (*controller_ptr).prepare();
 }
